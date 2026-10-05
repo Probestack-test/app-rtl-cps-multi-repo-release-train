@@ -1,0 +1,98 @@
+{
+  "artifactId" : "multi-repo-release-train",
+  "resourceId" : "6ac3c3be2fadbb6a58d3d9bf",
+  "generatedAt" : "2026-10-05T15:39:56.978018455Z",
+  "mock" : {
+    "id" : "4721da49-d0f6-4755-b2fd-fe09715ac3fa",
+    "microserviceId" : null,
+    "specMetadataId" : "6ac3c3d223399e0b2ec69f55",
+    "apiSpecName" : "Multi-Repo Release Train",
+    "name" : "mock-multi-repo-release-train",
+    "mockServiceName" : "mock-multi-repo-release-train",
+    "mockServerUrl" : "https://forgesphere.probestack.io/mock-api/v1/api/mocks/mock-85e4be72",
+    "mockUrl" : "mock-85e4be72",
+    "isPrivate" : false,
+    "delayMs" : 0,
+    "responseLatencyMs" : 0,
+    "requestCount" : 0,
+    "createdAt" : "2026-10-05T15:36:10.573Z",
+    "updatedAt" : "2026-10-05T15:36:10.578Z"
+  },
+  "endpoints" : [ {
+    "id" : "f14ad179-b8c2-4204-9179-df417a14af5c",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/trains",
+      "bodySample" : "{\"trainName\":\"payment-platform-v2.5\",\"description\":\"Q4 payment platform release with new discount engine.\",\"environment\":\"PRODUCTION\",\"targetReleaseDate\":\"2026-10-15T00:00:00.000+00:00\",\"repositories\":[{\"repoId\":\"forgesphere/payment-service\",\"requiredVersion\":\"v2.5.0\",\"criticalPath\":true,\"dependsOn\":[\"forgesphere/discount-engine\"]}],\"waves\":[{\"waveNumber\":1,\"name\":\"foundation-libs\",\"repositories\":[\"forgesphere/discount-engine\"],\"strategy\":\"CANARY_5_PERCENT\",\"successGate\":{\"minSuccessRatePercent\":99.5,\"maxErrorRatePercent\":0.1,\"observationMinutes\":15}}],\"rollbackPolicy\":\"ROLLBACK_WAVE\",\"owner\":\"payments-platform-team\",\"notifyChannels\":[\"SLACK\",\"PAGERDUTY\"]}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 201,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"trainId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"trainName\":\"payment-platform-v2.5\",\"description\":\"Q4 payment platform release with new discount engine.\",\"environment\":\"PRODUCTION\",\"status\":\"RUNNING\",\"targetReleaseDate\":\"2026-10-15T00:00:00.000+00:00\",\"currentWave\":2,\"totalWaves\":3,\"progressPercent\":62,\"repositories\":[{\"repoId\":\"forgesphere/payment-service\",\"requiredVersion\":\"v2.5.0\",\"criticalPath\":true,\"deployed\":true,\"deployedAt\":\"2024-01-01T00:00:00Z\",\"deployedVersion\":\"v2.5.0\",\"readinessStatus\":\"READY\",\"dependsOn\":[\"forgesphere/discount-engine\"]}],\"waves\":[{\"waveNumber\":1,\"name\":\"foundation-libs\",\"status\":\"PASSED\",\"repositories\":[\"forgesphere/discount-engine\"],\"strategy\":\"CANARY_5_PERCENT\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"gateResult\":{\"passed\":true,\"successRatePercent\":99.8,\"errorRatePercent\":0.05,\"observationMinutes\":15,\"evaluatedAt\":\"2024-01-01T00:00:00Z\"}}],\"rollbackPolicy\":\"ROLLBACK_WAVE\",\"owner\":\"payments-platform-team\",\"createdAt\":\"2024-01-01T00:00:00Z\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"blockers\":[\"forgesphere/checkout-service v1.9.0 has not passed tests.\",\"forgesphere/discount-engine dependency conflict detected.\"]}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "71eb224c-ea3b-4c12-8451-ffecd5a642bf",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/trains/{trainId}",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"trainId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"trainName\":\"payment-platform-v2.5\",\"description\":\"Q4 payment platform release with new discount engine.\",\"environment\":\"PRODUCTION\",\"status\":\"RUNNING\",\"targetReleaseDate\":\"2026-10-15T00:00:00.000+00:00\",\"currentWave\":2,\"totalWaves\":3,\"progressPercent\":62,\"repositories\":[{\"repoId\":\"forgesphere/payment-service\",\"requiredVersion\":\"v2.5.0\",\"criticalPath\":true,\"deployed\":true,\"deployedAt\":\"2024-01-01T00:00:00Z\",\"deployedVersion\":\"v2.5.0\",\"readinessStatus\":\"READY\",\"dependsOn\":[\"forgesphere/discount-engine\"]}],\"waves\":[{\"waveNumber\":1,\"name\":\"foundation-libs\",\"status\":\"PASSED\",\"repositories\":[\"forgesphere/discount-engine\"],\"strategy\":\"CANARY_5_PERCENT\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"gateResult\":{\"passed\":true,\"successRatePercent\":99.8,\"errorRatePercent\":0.05,\"observationMinutes\":15,\"evaluatedAt\":\"2024-01-01T00:00:00Z\"}}],\"rollbackPolicy\":\"ROLLBACK_WAVE\",\"owner\":\"payments-platform-team\",\"createdAt\":\"2024-01-01T00:00:00Z\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"blockers\":[\"forgesphere/checkout-service v1.9.0 has not passed tests.\",\"forgesphere/discount-engine dependency conflict detected.\"]}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "25b2f2a7-4e57-4fed-93ef-943952a2e1b4",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/trains/{trainId}/execute",
+      "bodySample" : "{\"action\":\"START\",\"reason\":\"All pre-flight checks passed; starting release.\",\"targetWave\":1,\"notifyChannels\":[\"SLACK\"]}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"trainId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"trainName\":\"payment-platform-v2.5\",\"description\":\"Q4 payment platform release with new discount engine.\",\"environment\":\"PRODUCTION\",\"status\":\"RUNNING\",\"targetReleaseDate\":\"2026-10-15T00:00:00.000+00:00\",\"currentWave\":2,\"totalWaves\":3,\"progressPercent\":62,\"repositories\":[{\"repoId\":\"forgesphere/payment-service\",\"requiredVersion\":\"v2.5.0\",\"criticalPath\":true,\"deployed\":true,\"deployedAt\":\"2024-01-01T00:00:00Z\",\"deployedVersion\":\"v2.5.0\",\"readinessStatus\":\"READY\",\"dependsOn\":[\"forgesphere/discount-engine\"]}],\"waves\":[{\"waveNumber\":1,\"name\":\"foundation-libs\",\"status\":\"PASSED\",\"repositories\":[\"forgesphere/discount-engine\"],\"strategy\":\"CANARY_5_PERCENT\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"gateResult\":{\"passed\":true,\"successRatePercent\":99.8,\"errorRatePercent\":0.05,\"observationMinutes\":15,\"evaluatedAt\":\"2024-01-01T00:00:00Z\"}}],\"rollbackPolicy\":\"ROLLBACK_WAVE\",\"owner\":\"payments-platform-team\",\"createdAt\":\"2024-01-01T00:00:00Z\",\"startedAt\":\"2024-01-01T00:00:00Z\",\"completedAt\":\"2024-01-01T00:00:00Z\",\"blockers\":[\"forgesphere/checkout-service v1.9.0 has not passed tests.\",\"forgesphere/discount-engine dependency conflict detected.\"]}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "aff288db-652f-4f0d-b678-a7a88b78f73d",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/trains/{trainId}/history",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"trainId\":\"00000000-0000-0000-0000-000000000000\",\"events\":[{\"eventId\":\"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\"eventType\":\"WAVE_COMPLETED\",\"waveNumber\":1,\"repoId\":\"forgesphere/discount-engine\",\"occurredAt\":\"2024-01-01T00:00:00Z\",\"actor\":\"release-bot@forgesphere.example.com\",\"detail\":\"Wave 1 deployed successfully in 4m 32s.\",\"metadata\":{\"deployedVersion\":\"v2.5.0\",\"durationSeconds\":272}}],\"totalElements\":42,\"totalPages\":1,\"page\":0,\"size\":50}",
+      "delayMs" : 0
+    }
+  } ]
+}
