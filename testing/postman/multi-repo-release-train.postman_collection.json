@@ -1,0 +1,684 @@
+{
+  "info" : {
+    "_postman_id" : "96aa0a4a-5d35-4523-974f-c141b3a7b71e",
+    "name" : "Multi-Repo Release Train",
+    "description" : "Generated Postman collection for multi-repo-release-train",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable" : [ {
+    "key" : "baseUrl",
+    "value" : "http://localhost:8080",
+    "type" : "string"
+  }, {
+    "key" : "bearerToken",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "resourceId",
+    "value" : "sample-id",
+    "type" : "string"
+  }, {
+    "key" : "clientId",
+    "value" : "generated-service-client",
+    "type" : "string"
+  }, {
+    "key" : "clientSecret",
+    "value" : "change-me",
+    "type" : "string"
+  }, {
+    "key" : "scope",
+    "value" : "api.read api.write",
+    "type" : "string"
+  } ],
+  "item" : [ {
+    "name" : "Health",
+    "item" : [ {
+      "name" : "Health",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Liveness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/liveness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "liveness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/liveness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "liveness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Readiness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/readiness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "readiness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/readiness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "readiness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Metrics",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/metrics",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "metrics" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/metrics",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "metrics" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Prometheus",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/prometheus",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "prometheus" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/prometheus",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "prometheus" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    } ]
+  }, {
+    "name" : "Security",
+    "item" : [ {
+      "name" : "Get OAuth2 Token",
+      "request" : {
+        "auth" : {
+          "type" : "basic",
+          "basic" : [ {
+            "key" : "username",
+            "value" : "{{clientId}}",
+            "type" : "string"
+          }, {
+            "key" : "password",
+            "value" : "{{clientSecret}}",
+            "type" : "string"
+          } ]
+        },
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/x-www-form-urlencoded"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "urlencoded",
+          "urlencoded" : [ {
+            "key" : "grant_type",
+            "value" : "client_credentials",
+            "type" : "text"
+          }, {
+            "key" : "scope",
+            "value" : "{{scope}}",
+            "type" : "text"
+          } ]
+        },
+        "url" : {
+          "raw" : "{{baseUrl}}/oauth2/token",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "oauth2", "token" ]
+        }
+      },
+      "event" : [ {
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "const json = pm.response.json();", "if (json.access_token) {", "  pm.collectionVariables.set(\"bearerToken\", json.access_token);", "}" ]
+        }
+      } ]
+    } ]
+  }, {
+    "name" : "Trains",
+    "item" : [ {
+      "name" : "Create a new multi-repo release train",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/trains",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "trains" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"repositories\" : \"sample-repositories\",\n  \"waves\" : \"sample-waves\",\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"notifyChannels\" : [ \"SLACK\", \"PAGERDUTY\" ]\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "Created",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"repositories\" : \"sample-repositories\",\n  \"waves\" : \"sample-waves\",\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"notifyChannels\" : [ \"SLACK\", \"PAGERDUTY\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Created",
+        "code" : 201,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"trainId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"status\" : \"RUNNING\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"currentWave\" : 2,\n  \"totalWaves\" : 3,\n  \"progressPercent\" : 62,\n  \"repositories\" : [ {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  }, {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  } ],\n  \"waves\" : [ {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  }, {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  } ],\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"createdAt\" : 948603367000,\n  \"startedAt\" : 948603367000,\n  \"completedAt\" : 948603367000,\n  \"blockers\" : [ \"forgesphere/checkout-service v1.9.0 has not passed tests.\", \"forgesphere/discount-engine dependency conflict detected.\" ]\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"repositories\" : \"sample-repositories\",\n  \"waves\" : \"sample-waves\",\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"notifyChannels\" : [ \"SLACK\", \"PAGERDUTY\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-10-05T15:39:56.343245663Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Get live status of a release train",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/trains/9c8f1a3b-6d7e-4a12-8f5e-123456789abc",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "trains", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/9c8f1a3b-6d7e-4a12-8f5e-123456789abc",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"trainId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"status\" : \"RUNNING\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"currentWave\" : 2,\n  \"totalWaves\" : 3,\n  \"progressPercent\" : 62,\n  \"repositories\" : [ {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  }, {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  } ],\n  \"waves\" : [ {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  }, {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  } ],\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"createdAt\" : 948603367000,\n  \"startedAt\" : 948603367000,\n  \"completedAt\" : 948603367000,\n  \"blockers\" : [ \"forgesphere/checkout-service v1.9.0 has not passed tests.\", \"forgesphere/discount-engine dependency conflict detected.\" ]\n}"
+      }, {
+        "name" : "Not Found",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/9c8f1a3b-6d7e-4a12-8f5e-123456789abc",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ]
+          }
+        },
+        "status" : "Not Found",
+        "code" : 404,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-10-05T15:39:56.343727394Z\",\n  \"status\" : 404,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Start, pause, resume, or rollback the release train",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/trains/sample-id/execute",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "trains", "sample-id", "execute" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"action\" : \"START\",\n  \"reason\" : \"All pre-flight checks passed; starting release.\",\n  \"targetWave\" : 1,\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/sample-id/execute",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "sample-id", "execute" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"action\" : \"START\",\n  \"reason\" : \"All pre-flight checks passed; starting release.\",\n  \"targetWave\" : 1,\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"trainId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"trainName\" : \"payment-platform-v2.5\",\n  \"description\" : \"Q4 payment platform release with new discount engine.\",\n  \"environment\" : \"PRODUCTION\",\n  \"status\" : \"RUNNING\",\n  \"targetReleaseDate\" : 1792022400000,\n  \"currentWave\" : 2,\n  \"totalWaves\" : 3,\n  \"progressPercent\" : 62,\n  \"repositories\" : [ {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  }, {\n    \"repoId\" : \"forgesphere/payment-service\",\n    \"dependsOn\" : [ \"forgesphere/discount-engine\" ],\n    \"requiredVersion\" : \"v2.5.0\",\n    \"deployed\" : true,\n    \"criticalPath\" : true,\n    \"deployedAt\" : 948603367000,\n    \"readinessStatus\" : \"READY\",\n    \"deployedVersion\" : \"v2.5.0\"\n  } ],\n  \"waves\" : [ {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  }, {\n    \"completedAt\" : 948603367000,\n    \"gateResult\" : {\n      \"successRatePercent\" : 99.8,\n      \"observationMinutes\" : 15,\n      \"passed\" : true,\n      \"evaluatedAt\" : 948603367000,\n      \"errorRatePercent\" : 0.05\n    },\n    \"repositories\" : [ \"forgesphere/discount-engine\" ],\n    \"name\" : \"foundation-libs\",\n    \"startedAt\" : 948603367000,\n    \"strategy\" : \"CANARY_5_PERCENT\",\n    \"waveNumber\" : 1,\n    \"status\" : \"PASSED\"\n  } ],\n  \"rollbackPolicy\" : \"ROLLBACK_WAVE\",\n  \"owner\" : \"payments-platform-team\",\n  \"createdAt\" : 948603367000,\n  \"startedAt\" : 948603367000,\n  \"completedAt\" : 948603367000,\n  \"blockers\" : [ \"forgesphere/checkout-service v1.9.0 has not passed tests.\", \"forgesphere/discount-engine dependency conflict detected.\" ]\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/sample-id/execute",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "sample-id", "execute" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"action\" : \"START\",\n  \"reason\" : \"All pre-flight checks passed; starting release.\",\n  \"targetWave\" : 1,\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-10-05T15:39:56.344076354Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Get the full execution history of a release train",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/trains/sample-id/history?page=1&size=1",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "trains", "sample-id", "history" ],
+          "query" : [ {
+            "key" : "page",
+            "value" : 1
+          }, {
+            "key" : "size",
+            "value" : 1
+          } ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/sample-id/history?page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "sample-id", "history" ],
+            "query" : [ {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"trainId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"events\" : [ {\n    \"actor\" : \"release-bot@forgesphere.example.com\",\n    \"eventId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\n    \"repoId\" : \"forgesphere/discount-engine\",\n    \"occurredAt\" : 948603367000,\n    \"metadata\" : {\n      \"deployedVersion\" : \"v2.5.0\",\n      \"durationSeconds\" : 272\n    },\n    \"eventType\" : \"WAVE_COMPLETED\",\n    \"detail\" : \"Wave 1 deployed successfully in 4m 32s.\",\n    \"waveNumber\" : 1\n  }, {\n    \"actor\" : \"release-bot@forgesphere.example.com\",\n    \"eventId\" : \"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\n    \"repoId\" : \"forgesphere/discount-engine\",\n    \"occurredAt\" : 948603367000,\n    \"metadata\" : {\n      \"deployedVersion\" : \"v2.5.0\",\n      \"durationSeconds\" : 272\n    },\n    \"eventType\" : \"WAVE_COMPLETED\",\n    \"detail\" : \"Wave 1 deployed successfully in 4m 32s.\",\n    \"waveNumber\" : 1\n  } ],\n  \"totalElements\" : 42,\n  \"totalPages\" : 1,\n  \"page\" : 0,\n  \"size\" : 50\n}"
+      }, {
+        "name" : "Not Found",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/trains/sample-id/history?page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "trains", "sample-id", "history" ],
+            "query" : [ {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "Not Found",
+        "code" : 404,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-10-05T15:39:56.344424864Z\",\n  \"status\" : 404,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    } ]
+  } ]
+}
