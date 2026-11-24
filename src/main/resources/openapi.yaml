@@ -1,342 +1,354 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
-  contact:
-    email: release@forgesphere.example.com
-    name: ForgeSphere Release Engineering
-  description: "Coordinates atomic, coordinated releases across multiple interdependent\
-    \ \nrepositories. Prevents the classic \"repo A shipped, repo B didn't, \nproduction\
-    \ broke\" problem by enforcing that all required repos are \nready before any\
-    \ can deploy. Manages version pinning, release waves, \nand rollback of the entire\
-    \ train.\n"
   title: Multi-Repo Release Train
+  description: "Coordinates atomic, coordinated releases across multiple interdependent\
+    \  repositories. Prevents the classic \"repo A shipped, repo B didn't,  production\
+    \ broke\" problem by enforcing that all required repos are  ready before any can\
+    \ deploy. Manages version pinning, release waves,  and rollback of the entire\
+    \ train. "
+  contact:
+    name: ForgeSphere Release Engineering
+    email: release@forgesphere.example.com
   version: 1.0.0
 servers:
-- description: Production Server
-  url: https://releasetrain.forgesphere.lightning.com/v1
-- description: Local Development Server
-  url: http://localhost:8132/v1
-security:
-- bearerAuth: []
+- url: http://127.0.0.1:18080
+  description: Generated server url
 tags:
-- description: Create and manage multi-repo release trains.
-  name: Trains
-- description: Control the rollout waves within a train.
-  name: Waves
+- name: Trains
+  description: Create and manage multi-repo release trains.
 paths:
-  /trains:
+  /actuator/health:
+    get:
+      tags:
+      - Health
+      summary: Health
+      operationId: getHealth
+      responses:
+        "200":
+          description: Monitoring data returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+  /actuator/health/liveness:
+    get:
+      tags:
+      - Health
+      summary: Liveness
+      operationId: getLiveness
+      responses:
+        "200":
+          description: Monitoring data returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+  /actuator/health/readiness:
+    get:
+      tags:
+      - Health
+      summary: Readiness
+      operationId: getReadiness
+      responses:
+        "200":
+          description: Monitoring data returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+  /actuator/metrics:
+    get:
+      tags:
+      - Health
+      summary: Metrics
+      operationId: getMetrics
+      responses:
+        "200":
+          description: Monitoring data returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+  /actuator/prometheus:
+    get:
+      tags:
+      - Health
+      summary: Prometheus
+      operationId: getPrometheusMetrics
+      responses:
+        "200":
+          description: Prometheus metrics returned successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+  /oauth2/token:
     post:
+      tags:
+      - Security
+      summary: Get OAuth2 Token
+      description: Uses the OAuth 2.0 client credentials grant. Authenticate the client
+        with HTTP Basic credentials and submit grant_type=client_credentials.
+      operationId: getOAuth2Token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  default: client_credentials
+                  description: OAuth 2.0 grant type
+                  enum:
+                  - client_credentials
+                scope:
+                  type: string
+                  description: Space-delimited scopes
+                  example: api.read api.write
+              required:
+              - grant_type
+        required: true
+      responses:
+        "200":
+          description: Access token issued successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    format: int32
+                    example: 3600
+                  scope:
+                    type: string
+                    example: api.read api.write
+        "400":
+          description: Invalid token request
+        "401":
+          description: Invalid client credentials
+  /v1/trains:
+    post:
+      tags:
+      - Trains
+      summary: Create a new multi-repo release train
       description: "Defines a release train — a group of repositories that must ship\
-        \ \ntogether in a specific order. The train enforces dependency order, \n\
-        version pinning, and success gates between waves. Nothing deploys \nuntil\
-        \ the entire train is validated.\n"
+        \  together in a specific order. The train enforces dependency order,  version\
+        \ pinning, and success gates between waves. Nothing deploys  until the entire\
+        \ train is validated. "
       operationId: createReleaseTrain
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/createReleaseTrain_request"
+              $ref: "#/components/schemas/CreateReleaseTrainRequest"
         required: true
       responses:
         "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReleaseTrain"
           description: Release train created and validated.
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-          description: Invalid request payload or missing required fields.
-        "409":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-          description: A train with this name already exists.
-        "500":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-          description: Internal server error.
-      summary: Create a new multi-repo release train
-      tags:
-      - Trains
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: Trains
-  /trains/{trainId}:
-    get:
-      description: "Returns the current state of the release train — which wave is\
-        \ \nactive, which repositories are deployed, success-gate results, and \n\
-        any blockers. Safe to poll every 10 seconds during an active release.\n"
-      operationId: getReleaseTrain
-      parameters:
-      - description: Unique identifier of the release train.
-        example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
-        explode: false
-        in: path
-        name: trainId
-        required: true
-        schema:
-          format: uuid
-          type: string
-        style: simple
-      responses:
-        "200":
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReleaseTrain"
-          description: Release train status retrieved successfully.
-        "404":
+        "400":
+          description: Invalid request payload or missing required fields.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-          description: Train ID not found.
+        "409":
+          description: A train with this name already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "500":
+          description: Internal server error.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-          description: Internal server error.
-      summary: Get live status of a release train
+      security:
+      - bearerAuth: []
+  /v1/trains/{trainId}/execute:
+    post:
       tags:
       - Trains
-      x-accepts: application/json
-      x-tags:
-      - tag: Trains
-  /trains/{trainId}/execute:
-    post:
+      summary: "Start, pause, resume, or rollback the release train"
       description: "Controls the release train lifecycle. Actions: START begins the\
-        \ \nfirst wave, PAUSE halts after the current wave, RESUME continues \nfrom\
-        \ where it stopped, ROLLBACK reverts per the train's rollback \npolicy. Every\
-        \ action is audited.\n"
+        \  first wave, PAUSE halts after the current wave, RESUME continues  from\
+        \ where it stopped, ROLLBACK reverts per the train's rollback  policy. Every\
+        \ action is audited. "
       operationId: executeTrainAction
       parameters:
-      - description: Unique identifier of the release train.
-        explode: false
+      - name: trainId
         in: path
-        name: trainId
+        description: Unique identifier of the release train.
         required: true
         schema:
-          format: uuid
           type: string
-        style: simple
+          format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/executeTrainAction_request"
+              $ref: "#/components/schemas/ExecuteTrainActionRequest"
         required: true
       responses:
         "200":
+          description: Action applied successfully.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReleaseTrain"
-          description: Action applied successfully.
         "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
           description: Invalid request payload or missing required fields.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
           description: Train ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "409":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
           description: Train is not in a state that supports this action.
-        "500":
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal server error.
-      summary: "Start, pause, resume, or rollback the release train"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+      - bearerAuth: []
+  /v1/trains/{trainId}:
+    get:
       tags:
       - Trains
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: Trains
-  /trains/{trainId}/history:
-    get:
-      description: "Returns a chronological timeline of everything that happened during\
-        \ \nthe train — wave transitions, gate results, rollbacks, and the final \n\
-        outcome. Used for post-release review and compliance audits.\n"
-      operationId: getTrainHistory
+      summary: Get live status of a release train
+      description: "Returns the current state of the release train — which wave is\
+        \  active, which repositories are deployed, success-gate results, and  any\
+        \ blockers. Safe to poll every 10 seconds during an active release. "
+      operationId: getReleaseTrain
       parameters:
-      - description: Unique identifier of the release train.
-        explode: false
+      - name: trainId
         in: path
-        name: trainId
+        description: Unique identifier of the release train.
         required: true
         schema:
-          format: uuid
           type: string
-        style: simple
-      - description: Page number (zero-based).
-        explode: true
-        in: query
-        name: page
-        required: false
-        schema:
-          default: 0
-          type: integer
-        style: form
-      - description: Number of items per page.
-        explode: true
-        in: query
-        name: size
-        required: false
-        schema:
-          default: 50
-          maximum: 200
-          type: integer
-        style: form
+          format: uuid
       responses:
         "200":
+          description: Release train status retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReleaseTrain"
+        "404":
+          description: Train ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+      - bearerAuth: []
+  /v1/trains/{trainId}/history:
+    get:
+      tags:
+      - Trains
+      summary: Get the full execution history of a release train
+      description: "Returns a chronological timeline of everything that happened during\
+        \  the train — wave transitions, gate results, rollbacks, and the final  outcome.\
+        \ Used for post-release review and compliance audits. "
+      operationId: getTrainHistory
+      parameters:
+      - name: trainId
+        in: path
+        description: Unique identifier of the release train.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Page number (zero-based).
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        description: Number of items per page.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 50
+          maximum: 200
+      responses:
+        "200":
+          description: Historical timeline of the train.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TrainHistory"
-          description: Historical timeline of the train.
         "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
           description: Train ID not found.
-        "500":
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal server error.
-      summary: Get the full execution history of a release train
-      tags:
-      - Trains
-      x-accepts: application/json
-      x-tags:
-      - tag: Trains
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+      - bearerAuth: []
 components:
-  responses:
-    BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-      description: Invalid request payload or missing required fields.
-    NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-      description: Train ID not found.
-    InternalError:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-      description: Internal server error.
   schemas:
     ReleaseTrain:
-      example:
-        trainId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
-        waves:
-        - completedAt: 2000-01-23T04:56:07.000+00:00
-          gateResult:
-            successRatePercent: 99.8
-            observationMinutes: 15
-            passed: true
-            evaluatedAt: 2000-01-23T04:56:07.000+00:00
-            errorRatePercent: 0.05
-          repositories:
-          - forgesphere/discount-engine
-          name: foundation-libs
-          startedAt: 2000-01-23T04:56:07.000+00:00
-          strategy: CANARY_5_PERCENT
-          waveNumber: 1
-          status: PASSED
-        - completedAt: 2000-01-23T04:56:07.000+00:00
-          gateResult:
-            successRatePercent: 99.8
-            observationMinutes: 15
-            passed: true
-            evaluatedAt: 2000-01-23T04:56:07.000+00:00
-            errorRatePercent: 0.05
-          repositories:
-          - forgesphere/discount-engine
-          name: foundation-libs
-          startedAt: 2000-01-23T04:56:07.000+00:00
-          strategy: CANARY_5_PERCENT
-          waveNumber: 1
-          status: PASSED
-        owner: payments-platform-team
-        completedAt: 2000-01-23T04:56:07.000+00:00
-        currentWave: 2
-        description: Q4 payment platform release with new discount engine.
-        startedAt: 2000-01-23T04:56:07.000+00:00
-        totalWaves: 3
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        environment: PRODUCTION
-        repositories:
-        - repoId: forgesphere/payment-service
-          dependsOn:
-          - forgesphere/discount-engine
-          requiredVersion: v2.5.0
-          deployed: true
-          criticalPath: true
-          deployedAt: 2000-01-23T04:56:07.000+00:00
-          readinessStatus: READY
-          deployedVersion: v2.5.0
-        - repoId: forgesphere/payment-service
-          dependsOn:
-          - forgesphere/discount-engine
-          requiredVersion: v2.5.0
-          deployed: true
-          criticalPath: true
-          deployedAt: 2000-01-23T04:56:07.000+00:00
-          readinessStatus: READY
-          deployedVersion: v2.5.0
-        trainName: payment-platform-v2.5
-        progressPercent: 62
-        blockers:
-        - forgesphere/checkout-service v1.9.0 has not passed tests.
-        - forgesphere/discount-engine dependency conflict detected.
-        rollbackPolicy: ROLLBACK_WAVE
-        targetReleaseDate: 2026-10-15T00:00:00.000+00:00
-        status: RUNNING
+      type: object
       properties:
         trainId:
-          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          type: string
           format: uuid
-          type: string
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
         trainName:
+          type: string
           example: payment-platform-v2.5
-          type: string
         description:
-          example: Q4 payment platform release with new discount engine.
           type: string
+          example: Q4 payment platform release with new discount engine.
         environment:
+          type: string
           enum:
           - STAGING
           - PRODUCTION
           example: PRODUCTION
-          type: string
         status:
+          type: string
           enum:
           - DRAFT
           - VALIDATING
@@ -349,57 +361,59 @@ components:
           - ROLLED_BACK
           - ABORTED
           example: RUNNING
-          type: string
         targetReleaseDate:
-          example: 2026-10-15
-          format: date
           type: string
+          format: date
+          example: Thu Oct 15 00:00:00 GMT 2026
         currentWave:
+          type: integer
+          format: int32
           description: "Wave currently being deployed (1-indexed, 0 if not started)."
           example: 2
-          type: integer
         totalWaves:
+          type: integer
+          format: int32
           example: 3
-          type: integer
         progressPercent:
-          example: 62
           type: integer
+          format: int32
+          example: 62
         repositories:
-          items:
-            $ref: "#/components/schemas/ReleaseTrain_repositories_inner"
           type: array
+          items:
+            $ref: "#/components/schemas/ReleaseTrainRepositoriesInner"
         waves:
-          items:
-            $ref: "#/components/schemas/ReleaseTrain_waves_inner"
           type: array
+          items:
+            $ref: "#/components/schemas/ReleaseTrainWavesInner"
         rollbackPolicy:
+          type: string
           enum:
           - ROLLBACK_ALL
           - ROLLBACK_WAVE
           - ROLLBACK_FAILED_ONLY
           - MANUAL
           example: ROLLBACK_WAVE
-          type: string
         owner:
+          type: string
           example: payments-platform-team
-          type: string
         createdAt:
-          format: date-time
           type: string
+          format: date-time
         startedAt:
-          format: date-time
           type: string
+          format: date-time
         completedAt:
-          format: date-time
           type: string
+          format: date-time
         blockers:
+          type: array
           description: Reasons the train cannot proceed.
           example:
           - forgesphere/checkout-service v1.9.0 has not passed tests.
           - forgesphere/discount-engine dependency conflict detected.
           items:
             type: string
-          type: array
       required:
       - createdAt
       - currentWave
@@ -410,357 +424,58 @@ components:
       - trainId
       - trainName
       - waves
+    ReleaseTrainRepositoriesInner:
       type: object
-    TrainHistory:
-      example:
-        trainId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        size: 50
-        totalPages: 1
-        page: 0
-        events:
-        - actor: release-bot@forgesphere.example.com
-          eventId: a1b2c3d4-e5f6-7890-1234-567890abcdef
-          repoId: forgesphere/discount-engine
-          occurredAt: 2000-01-23T04:56:07.000+00:00
-          metadata:
-            deployedVersion: v2.5.0
-            durationSeconds: 272
-          eventType: WAVE_COMPLETED
-          detail: Wave 1 deployed successfully in 4m 32s.
-          waveNumber: 1
-        - actor: release-bot@forgesphere.example.com
-          eventId: a1b2c3d4-e5f6-7890-1234-567890abcdef
-          repoId: forgesphere/discount-engine
-          occurredAt: 2000-01-23T04:56:07.000+00:00
-          metadata:
-            deployedVersion: v2.5.0
-            durationSeconds: 272
-          eventType: WAVE_COMPLETED
-          detail: Wave 1 deployed successfully in 4m 32s.
-          waveNumber: 1
-        totalElements: 42
-      properties:
-        trainId:
-          format: uuid
-          type: string
-        events:
-          items:
-            $ref: "#/components/schemas/TrainHistory_events_inner"
-          type: array
-        totalElements:
-          example: 42
-          type: integer
-        totalPages:
-          example: 1
-          type: integer
-        page:
-          example: 0
-          type: integer
-        size:
-          example: 50
-          type: integer
-      required:
-      - events
-      - totalElements
-      - totalPages
-      - trainId
-      type: object
-    ErrorResponse:
-      properties:
-        status:
-          example: 409
-          type: integer
-        errorCode:
-          example: TRAIN_ALREADY_RUNNING
-          type: string
-        message:
-          example: Release train payment-platform-v2.5 is already running.
-          type: string
-        timestamp:
-          format: date-time
-          type: string
-        path:
-          example: /v1/trains/9c8f1a3b/execute
-          type: string
-        serviceTransactionId:
-          example: 523f52b2-64a5-465e-b245-3efbe78f70ae
-          type: string
-      required:
-      - message
-      - path
-      - status
-      - timestamp
-      type: object
-    createReleaseTrain_request_repositories_inner:
       properties:
         repoId:
+          type: string
           example: forgesphere/payment-service
-          type: string
         requiredVersion:
-          description: Version or commit that must be deployed.
+          type: string
           example: v2.5.0
-          type: string
         criticalPath:
-          description: "If true, the train blocks if this repo isn't ready."
-          example: true
           type: boolean
-        dependsOn:
-          description: Other repos this one depends on.
-          example:
-          - forgesphere/discount-engine
-          items:
-            type: string
-          type: array
-      required:
-      - criticalPath
-      - repoId
-      - requiredVersion
-      type: object
-    createReleaseTrain_request_waves_inner_successGate:
-      description: Conditions required before moving to the next wave.
-      properties:
-        minSuccessRatePercent:
-          example: 99.5
-          type: number
-        maxErrorRatePercent:
-          example: 0.1
-          type: number
-        observationMinutes:
-          example: 15
-          type: integer
-      type: object
-    createReleaseTrain_request_waves_inner:
-      properties:
-        waveNumber:
-          example: 1
-          type: integer
-        name:
-          example: foundation-libs
-          type: string
-        repositories:
-          example:
-          - forgesphere/discount-engine
-          items:
-            type: string
-          type: array
-        strategy:
-          enum:
-          - SEQUENTIAL
-          - PARALLEL
-          - CANARY_5_PERCENT
-          - CANARY_25_PERCENT
-          - BLUE_GREEN
-          example: CANARY_5_PERCENT
-          type: string
-        successGate:
-          $ref: "#/components/schemas/createReleaseTrain_request_waves_inner_successGate"
-      required:
-      - name
-      - repositories
-      - strategy
-      - waveNumber
-      type: object
-    createReleaseTrain_request:
-      properties:
-        trainName:
-          description: Unique name for this release train.
-          example: payment-platform-v2.5
-          type: string
-        description:
-          description: Optional description of the release scope.
-          example: Q4 payment platform release with new discount engine.
-          type: string
-        environment:
-          description: Target environment for the train.
-          enum:
-          - STAGING
-          - PRODUCTION
-          example: PRODUCTION
-          type: string
-        targetReleaseDate:
-          description: Planned release date.
-          example: 2026-10-15
-          format: date
-          type: string
-        repositories:
-          description: All repositories participating in this train.
-          items:
-            $ref: "#/components/schemas/createReleaseTrain_request_repositories_inner"
-          type: array
-        waves:
-          description: Ordered deployment waves.
-          items:
-            $ref: "#/components/schemas/createReleaseTrain_request_waves_inner"
-          type: array
-        rollbackPolicy:
-          default: ROLLBACK_WAVE
-          description: How to roll back if a wave fails.
-          enum:
-          - ROLLBACK_ALL
-          - ROLLBACK_WAVE
-          - ROLLBACK_FAILED_ONLY
-          - MANUAL
-          example: ROLLBACK_WAVE
-          type: string
-        owner:
-          description: Team owning this train.
-          example: payments-platform-team
-          type: string
-        notifyChannels:
-          description: Channels to notify on train events.
-          example:
-          - SLACK
-          - PAGERDUTY
-          items:
-            enum:
-            - EMAIL
-            - SLACK
-            - PAGERDUTY
-            - WEBHOOK
-            type: string
-          type: array
-      required:
-      - environment
-      - repositories
-      - trainName
-      - waves
-      type: object
-    executeTrainAction_request:
-      properties:
-        action:
-          description: Action to perform on the train.
-          enum:
-          - START
-          - PAUSE
-          - RESUME
-          - ROLLBACK
-          - ABORT
-          example: START
-          type: string
-        reason:
-          description: Reason for the action (min 15 chars).
-          example: All pre-flight checks passed; starting release.
-          minLength: 15
-          type: string
-        targetWave:
-          description: Optional. Start or rollback from a specific wave.
-          example: 1
-          type: integer
-        notifyChannels:
-          description: Channels to notify of this action.
-          example:
-          - SLACK
-          items:
-            enum:
-            - EMAIL
-            - SLACK
-            - PAGERDUTY
-            - WEBHOOK
-            type: string
-          type: array
-      required:
-      - action
-      - reason
-      type: object
-    ReleaseTrain_repositories_inner:
-      example:
-        repoId: forgesphere/payment-service
-        dependsOn:
-        - forgesphere/discount-engine
-        requiredVersion: v2.5.0
-        deployed: true
-        criticalPath: true
-        deployedAt: 2000-01-23T04:56:07.000+00:00
-        readinessStatus: READY
-        deployedVersion: v2.5.0
-      properties:
-        repoId:
-          example: forgesphere/payment-service
-          type: string
-        requiredVersion:
-          example: v2.5.0
-          type: string
-        criticalPath:
           example: true
-          type: boolean
         deployed:
-          example: true
           type: boolean
+          example: true
         deployedAt:
+          type: string
           format: date-time
-          type: string
         deployedVersion:
-          example: v2.5.0
           type: string
+          example: v2.5.0
         readinessStatus:
+          type: string
           enum:
           - PENDING
           - READY
           - MISSING
           - INCOMPATIBLE
           example: READY
-          type: string
         dependsOn:
+          type: array
           example:
           - forgesphere/discount-engine
           items:
             type: string
-          type: array
       required:
       - criticalPath
       - deployed
       - repoId
       - requiredVersion
+    ReleaseTrainWavesInner:
       type: object
-    ReleaseTrain_waves_inner_gateResult:
-      description: Result of the success gate for this wave.
-      example:
-        successRatePercent: 99.8
-        observationMinutes: 15
-        passed: true
-        evaluatedAt: 2000-01-23T04:56:07.000+00:00
-        errorRatePercent: 0.05
-      properties:
-        passed:
-          example: true
-          type: boolean
-        successRatePercent:
-          example: 99.8
-          type: number
-        errorRatePercent:
-          example: 0.05
-          type: number
-        observationMinutes:
-          example: 15
-          type: integer
-        evaluatedAt:
-          format: date-time
-          type: string
-      type: object
-    ReleaseTrain_waves_inner:
-      example:
-        completedAt: 2000-01-23T04:56:07.000+00:00
-        gateResult:
-          successRatePercent: 99.8
-          observationMinutes: 15
-          passed: true
-          evaluatedAt: 2000-01-23T04:56:07.000+00:00
-          errorRatePercent: 0.05
-        repositories:
-        - forgesphere/discount-engine
-        name: foundation-libs
-        startedAt: 2000-01-23T04:56:07.000+00:00
-        strategy: CANARY_5_PERCENT
-        waveNumber: 1
-        status: PASSED
       properties:
         waveNumber:
-          example: 1
           type: integer
+          format: int32
+          example: 1
         name:
-          example: foundation-libs
           type: string
+          example: foundation-libs
         status:
+          type: string
           enum:
           - PENDING
           - RUNNING
@@ -770,14 +485,14 @@ components:
           - ROLLED_BACK
           - SKIPPED
           example: PASSED
-          type: string
         repositories:
+          type: array
           example:
           - forgesphere/discount-engine
           items:
             type: string
-          type: array
         strategy:
+          type: string
           enum:
           - SEQUENTIAL
           - PARALLEL
@@ -785,13 +500,12 @@ components:
           - CANARY_25_PERCENT
           - BLUE_GREEN
           example: CANARY_5_PERCENT
-          type: string
         startedAt:
-          format: date-time
           type: string
+          format: date-time
         completedAt:
-          format: date-time
           type: string
+          format: date-time
         gateResult:
           $ref: "#/components/schemas/ReleaseTrain_waves_inner_gateResult"
       required:
@@ -799,25 +513,267 @@ components:
       - repositories
       - status
       - waveNumber
+    ReleaseTrain_waves_inner_gateResult:
       type: object
-    TrainHistory_events_inner:
-      example:
-        actor: release-bot@forgesphere.example.com
-        eventId: a1b2c3d4-e5f6-7890-1234-567890abcdef
-        repoId: forgesphere/discount-engine
-        occurredAt: 2000-01-23T04:56:07.000+00:00
-        metadata:
-          deployedVersion: v2.5.0
-          durationSeconds: 272
-        eventType: WAVE_COMPLETED
-        detail: Wave 1 deployed successfully in 4m 32s.
-        waveNumber: 1
+      description: Result of the success gate for this wave.
+      properties:
+        passed:
+          type: boolean
+          example: true
+        successRatePercent:
+          type: number
+          example: 99.8
+        errorRatePercent:
+          type: number
+          example: 0.05
+        observationMinutes:
+          type: integer
+          format: int32
+          example: 15
+        evaluatedAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 409
+        errorCode:
+          type: string
+          example: TRAIN_ALREADY_RUNNING
+        message:
+          type: string
+          example: Release train payment-platform-v2.5 is already running.
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+          example: /v1/trains/9c8f1a3b/execute
+        serviceTransactionId:
+          type: string
+          example: 523f52b2-64a5-465e-b245-3efbe78f70ae
+      required:
+      - message
+      - path
+      - status
+      - timestamp
+    CreateReleaseTrainRequest:
+      type: object
+      properties:
+        trainName:
+          type: string
+          description: Unique name for this release train.
+          example: payment-platform-v2.5
+        description:
+          type: string
+          description: Optional description of the release scope.
+          example: Q4 payment platform release with new discount engine.
+        environment:
+          type: string
+          description: Target environment for the train.
+          enum:
+          - STAGING
+          - PRODUCTION
+          example: PRODUCTION
+        targetReleaseDate:
+          type: string
+          format: date
+          description: Planned release date.
+          example: Thu Oct 15 00:00:00 GMT 2026
+        repositories:
+          type: array
+          description: All repositories participating in this train.
+          items:
+            $ref: "#/components/schemas/CreateReleaseTrainRequestRepositoriesInner"
+        waves:
+          type: array
+          description: Ordered deployment waves.
+          items:
+            $ref: "#/components/schemas/CreateReleaseTrainRequestWavesInner"
+        rollbackPolicy:
+          type: string
+          description: How to roll back if a wave fails.
+          enum:
+          - ROLLBACK_ALL
+          - ROLLBACK_WAVE
+          - ROLLBACK_FAILED_ONLY
+          - MANUAL
+          example: ROLLBACK_WAVE
+        owner:
+          type: string
+          description: Team owning this train.
+          example: payments-platform-team
+        notifyChannels:
+          type: array
+          description: Channels to notify on train events.
+          example:
+          - SLACK
+          - PAGERDUTY
+          items:
+            type: string
+            enum:
+            - EMAIL
+            - SLACK
+            - PAGERDUTY
+            - WEBHOOK
+      required:
+      - environment
+      - repositories
+      - trainName
+      - waves
+    CreateReleaseTrainRequestRepositoriesInner:
+      type: object
+      properties:
+        repoId:
+          type: string
+          example: forgesphere/payment-service
+        requiredVersion:
+          type: string
+          description: Version or commit that must be deployed.
+          example: v2.5.0
+        criticalPath:
+          type: boolean
+          description: "If true, the train blocks if this repo isn't ready."
+          example: true
+        dependsOn:
+          type: array
+          description: Other repos this one depends on.
+          example:
+          - forgesphere/discount-engine
+          items:
+            type: string
+      required:
+      - criticalPath
+      - repoId
+      - requiredVersion
+    CreateReleaseTrainRequestWavesInner:
+      type: object
+      properties:
+        waveNumber:
+          type: integer
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: foundation-libs
+        repositories:
+          type: array
+          example:
+          - forgesphere/discount-engine
+          items:
+            type: string
+        strategy:
+          type: string
+          enum:
+          - SEQUENTIAL
+          - PARALLEL
+          - CANARY_5_PERCENT
+          - CANARY_25_PERCENT
+          - BLUE_GREEN
+          example: CANARY_5_PERCENT
+        successGate:
+          $ref: "#/components/schemas/createReleaseTrain_request_waves_inner_successGate"
+      required:
+      - name
+      - repositories
+      - strategy
+      - waveNumber
+    createReleaseTrain_request_waves_inner_successGate:
+      type: object
+      description: Conditions required before moving to the next wave.
+      properties:
+        minSuccessRatePercent:
+          type: number
+          example: 99.5
+        maxErrorRatePercent:
+          type: number
+          example: 0.1
+        observationMinutes:
+          type: integer
+          format: int32
+          example: 15
+    ExecuteTrainActionRequest:
+      type: object
+      properties:
+        action:
+          type: string
+          description: Action to perform on the train.
+          enum:
+          - START
+          - PAUSE
+          - RESUME
+          - ROLLBACK
+          - ABORT
+          example: START
+        reason:
+          type: string
+          description: Reason for the action (min 15 chars).
+          example: All pre-flight checks passed; starting release.
+          maxLength: 2147483647
+          minLength: 15
+        targetWave:
+          type: integer
+          format: int32
+          description: Optional. Start or rollback from a specific wave.
+          example: 1
+        notifyChannels:
+          type: array
+          description: Channels to notify of this action.
+          example:
+          - SLACK
+          items:
+            type: string
+            enum:
+            - EMAIL
+            - SLACK
+            - PAGERDUTY
+            - WEBHOOK
+      required:
+      - action
+      - reason
+    TrainHistory:
+      type: object
+      properties:
+        trainId:
+          type: string
+          format: uuid
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainHistoryEventsInner"
+        totalElements:
+          type: integer
+          format: int32
+          example: 42
+        totalPages:
+          type: integer
+          format: int32
+          example: 1
+        page:
+          type: integer
+          format: int32
+          example: 0
+        size:
+          type: integer
+          format: int32
+          example: 50
+      required:
+      - events
+      - totalElements
+      - totalPages
+      - trainId
+    TrainHistoryEventsInner:
+      type: object
       properties:
         eventId:
-          example: a1b2c3d4-e5f6-7890-1234-567890abcdef
-          format: uuid
           type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-7890-1234-567890abcdef
         eventType:
+          type: string
           enum:
           - TRAIN_CREATED
           - VALIDATION_PASSED
@@ -834,37 +790,39 @@ components:
           - TRAIN_FAILED
           - ABORTED
           example: WAVE_COMPLETED
-          type: string
         waveNumber:
-          example: 1
           type: integer
+          format: int32
+          example: 1
         repoId:
+          type: string
           example: forgesphere/discount-engine
-          type: string
         occurredAt:
+          type: string
           format: date-time
-          type: string
         actor:
+          type: string
           example: release-bot@forgesphere.example.com
-          type: string
         detail:
-          example: Wave 1 deployed successfully in 4m 32s.
           type: string
+          example: Wave 1 deployed successfully in 4m 32s.
         metadata:
-          additionalProperties: true
+          type: object
+          additionalProperties: {}
           example:
             deployedVersion: v2.5.0
             durationSeconds: 272
-          type: object
       required:
       - actor
       - eventId
       - eventType
       - occurredAt
-      type: object
   securitySchemes:
     bearerAuth:
-      bearerFormat: JWT
-      description: JWT token issued to release managers or CI/CD pipelines.
-      scheme: bearer
-      type: http
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth2/token
+          scopes:
+            api.read: Read access to the API
+            api.write: Write access to the API
